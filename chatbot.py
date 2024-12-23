@@ -46,20 +46,27 @@ if prompt := st.chat_input("Ask me anything about healthcare!"):
     """
 
     # Add the healthcare prompt to the message list for the model
-    messages = [{"role": "system", "content": healthcare_prompt}]  # Adding healthcare context to the system message
+    messages = [
+        {"role": "system", "content": healthcare_prompt},  # Context for the model
+        {"role": "user", "content": prompt}  # User query
+    ]
 
-    # Add the user’s input message to the context
+    # Add previous chat history if needed (to maintain conversation context)
     for message in st.session_state.chat_history:
         messages.append(
             {
-                "role": message["role"] if message["role"] == "user" else "model",
+                "role": message["role"],  # "user" or "assistant"
                 "content": message["content"]
             }
         )
 
-    # Send the prepared messages to the model for content generation
-    response = model.generate_content(messages)
-    
-    # Add the assistant's response to the session history
-    st.session_state.chat_history.append({"role": "assistant", "content": response.text})
-    st.chat_message("assistant").write(response.text)
+    try:
+        # Send the prepared messages to the model for content generation
+        response = model.generate_content(messages)
+        
+        # Add the assistant's response to the session history
+        st.session_state.chat_history.append({"role": "assistant", "content": response.text})
+        st.chat_message("assistant").write(response.text)
+    except Exception as e:
+        # If an error occurs, display the error message
+        st.error(f"Error generating response: {e}")
