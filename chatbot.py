@@ -45,10 +45,10 @@ if prompt := st.chat_input("Ask me anything about healthcare!"):
     User Query: {prompt}
     """
 
-    # Add the healthcare prompt to the message list for the model
+    # Prepare the message structure with 'parts' and 'role'
     messages = [
-        {"role": "system", "content": healthcare_prompt},  # Context for the model
-        {"role": "user", "content": prompt}  # User query
+        {"role": "system", "parts": ["Healthcare context for the model: " + healthcare_prompt]},  # Context for the model
+        {"role": "user", "parts": [prompt]}  # User query
     ]
 
     # Add previous chat history if needed (to maintain conversation context)
@@ -56,7 +56,7 @@ if prompt := st.chat_input("Ask me anything about healthcare!"):
         messages.append(
             {
                 "role": message["role"],  # "user" or "assistant"
-                "content": message["content"]
+                "parts": [message["content"]]
             }
         )
 
