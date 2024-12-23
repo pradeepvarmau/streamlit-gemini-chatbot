@@ -34,29 +34,13 @@ if prompt := st.chat_input("Ask me anything about healthcare!"):
     st.session_state.chat_history.append({"role": "user", "content": prompt})
     st.chat_message("user").write(prompt)
     
-    # Prepare the healthcare-specific prompt for the model
-    healthcare_prompt = f"""
-    You are a healthcare assistant trained to provide clear, accurate, and empathetic medical information. 
-    Your responses should be focused on healthcare-related topics such as medical conditions, treatment options, preventive care, and general wellness.
-    Please provide evidence-based information that is simple to understand for a wide audience, ensuring to explain complex medical terms when necessary.
-    If asked about a specific condition, describe the symptoms, causes, diagnostic process, and possible treatment options.
-    Avoid giving personal medical advice, but offer reliable information that can guide the user in seeking professional care.
-
-    User Query: {prompt}
-    """
-
-    # Prepare the message structure with 'parts' and 'role'
-    messages = [
-        {"role": "system", "parts": ["Healthcare context for the model: " + healthcare_prompt]},  # Context for the model
-        {"role": "user", "parts": [prompt]}  # User query
-    ]
-
-    # Add previous chat history if needed (to maintain conversation context)
+    # Prepare the messages for the model
+    messages = []
     for message in st.session_state.chat_history:
         messages.append(
             {
                 "role": message["role"],  # "user" or "assistant"
-                "parts": [message["content"]]
+                "parts": [message["content"]]  # Content inside the "parts" key
             }
         )
 
