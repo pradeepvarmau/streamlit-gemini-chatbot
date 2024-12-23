@@ -5,7 +5,7 @@ import google.generativeai as genai
 with st.sidebar:
     gemini_api_key = st.text_input("Gemini API Key", key="chatbot_api_key", type="password")
     "[Get an Gemini API key](https://aistudio.google.com/app/apikey)"
-    "[View the source code](https://github.com/danishi/streamlit-gemini-chatbot)"
+    
 
 st.title("✨ Gemini Chatbot")
 st.caption("🚀 A Streamlit chatbot powered by Gemini")
