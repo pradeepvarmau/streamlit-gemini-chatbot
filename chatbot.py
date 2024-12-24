@@ -34,8 +34,20 @@ if prompt := st.chat_input("Ask me anything about healthcare!"):
     st.session_state.chat_history.append({"role": "user", "content": prompt})
     st.chat_message("user").write(prompt)
     
-    # Prepare the messages for the model
-    messages = []
+    # Define the healthcare prompt template
+    healthcare_prompt = f"""You are a healthcare assistant. Your goal is to help users identify potential causes for their symptoms and give appropriate advice or recommendations.
+    Respond politely, empathetically, and responsibly. Always encourage users to seek a healthcare professional for a proper diagnosis.
+    Here's the user's symptom description:
+    {prompt}
+
+    Your response:"""
+    
+    # Prepare the messages for the model, including the healthcare-specific prompt
+    messages = [
+        {"role": "user", "parts": [healthcare_prompt]}  # Use the healthcare prompt for the user's input
+    ]
+    
+    # Add any previous chat history if necessary
     for message in st.session_state.chat_history:
         messages.append(
             {
